@@ -4,7 +4,7 @@
  *
  * Usage:
  *   node scripts/validate-json.mjs --schema <name> --input <file>
- *   node scripts/validate-json.mjs --schema research-plan --input plan.json
+ *   node scripts/validate-json.mjs --schema claim-review --input claims.jsonl
  *   node scripts/validate-json.mjs --schema evidence --input records.jsonl
  *
  * Exit codes:
@@ -39,7 +39,7 @@ function usage(exitCode = 0) {
     "Validate a JSON or JSONL file against schemas/<name>.schema.json.",
     "",
     "Arguments:",
-    "  --schema <name>   Schema name (e.g. research-plan, evidence, claim-review, audit)",
+    "  --schema <name>   Schema name (e.g. evidence, claim-review, audit)",
     "  --input <file>    Path to JSON or JSONL input file",
     "  --format <fmt>    Input format: json or jsonl (default: auto-detect from extension)",
     "  --help            Show this message",
@@ -62,7 +62,7 @@ function usage(exitCode = 0) {
 /**
  * Load a JSON Schema file and resolve `$ref` references to `_defs.json`.
  *
- * @param {string} schemaName  — e.g. "research-plan"
+ * @param {string} schemaName  — e.g. "claim-review"
  * @returns {{ schema: object, defs: object }}
  */
 function loadSchema(schemaName) {

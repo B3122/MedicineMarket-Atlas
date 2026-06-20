@@ -5,7 +5,7 @@ submit pull requests, and set up a development environment.
 
 ## Reporting Bugs
 
-- Check the existing [issues](https://github.com/B3122/PharmaLens/issues)
+- Check the existing [issues](https://github.com/B3122/MedicineMarket-Atlas/issues)
   to avoid duplicates.
 - Open a new issue and include:
   - A short, clear title.
@@ -44,8 +44,8 @@ This repo uses a single default branch model:
 
 ```bash
 # Clone the repo
-git clone https://github.com/B3122/PharmaLens.git
-cd market-research
+git clone https://github.com/B3122/MedicineMarket-Atlas.git
+cd medicinemarket-atlas
 
 # Create a virtual environment
 python3 -m venv .venv

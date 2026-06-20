@@ -1,6 +1,6 @@
 <div align="center">
 
-# 🔬 PharmaLens
+# 🔬 MedicineMarket-Atlas
 
 **A Local, Agent-Driven Pharmaceutical & Health-Product Market Research System**
 
@@ -11,7 +11,7 @@
 
 </div>
 
-> **PharmaLens** turns a research brief into reproducible, source-grounded market intelligence or evidence-review reports. Nine specialist agents collaborate on planning, research, normalization, analysis, reporting, and auditing — all running locally, with no data leaving your machine.
+> **MedicineMarket-Atlas** turns a research brief into reproducible, source-grounded market intelligence or evidence-review reports. Nine specialist agents collaborate on planning, research, normalization, analysis, reporting, and auditing — all running locally, with no data leaving your machine.
 
 ---
 
@@ -23,8 +23,8 @@ Pick your OS and copy the matching commands. The setup script auto-detects your 
 
 ```bash
 # 1. Clone the repo
-git clone https://github.com/B3122/PharmaLens.git pharmalens
-cd pharmalens
+git clone https://github.com/B3122/MedicineMarket-Atlas.git medicinemarket-atlas
+cd medicinemarket-atlas
 
 # 2. Run the installer
 chmod +x setup.sh
@@ -50,8 +50,8 @@ Windows users need **Git Bash** or **WSL (recommended)**, because the `competito
 3. Inside WSL, run:
 
    ```bash
-   git clone https://github.com/B3122/PharmaLens.git pharmalens
-   cd pharmalens
+   git clone https://github.com/B3122/MedicineMarket-Atlas.git medicinemarket-atlas
+   cd medicinemarket-atlas
    chmod +x setup.sh
    ./setup.sh
    pi
@@ -64,8 +64,8 @@ Windows users need **Git Bash** or **WSL (recommended)**, because the `competito
 3. Run:
 
    ```bash
-   git clone https://github.com/B3122/PharmaLens.git pharmalens
-   cd pharmalens
+   git clone https://github.com/B3122/MedicineMarket-Atlas.git medicinemarket-atlas
+   cd medicinemarket-atlas
    chmod +x setup.sh
    ./setup.sh
    pi
@@ -89,7 +89,7 @@ After installation, run your first research chain in 3 steps:
 
 ```bash
 # 1. Enter the project
-cd pharmalens
+cd medicinemarket-atlas
 
 # 2. Launch Pi
 pi
@@ -230,12 +230,14 @@ Edit `brief.md` and `config.json` to replace the placeholders.
 
 ### Resume from Checkpoint
 
-The system supports checkpoint resume. Re-run the same command to detect completed steps and prompt you to continue.
+Re-run the original chain command. The orchestrator will call `check-progress.py` before execution to detect completed steps and prompt you to resume, restart, or quit.
+
+Artifact validity is the ground truth for completion; `progress.json` does not override missing or invalid artifacts.
 
 ### Check Progress
 
 ```bash
-python .pi/scripts/check-progress.py projects/<project-name>/
+python .pi/scripts/check-progress.py projects/<project-name>/ --chain full-market-review
 ```
 
 ---
@@ -243,7 +245,7 @@ python .pi/scripts/check-progress.py projects/<project-name>/
 ## 📁 Project Structure
 
 ```
-pharmalens/
+medicinemarket-atlas/
 ├── AGENTS.md                     # Orchestrator role and workflow rules
 ├── SYSTEM.md                     # Full operational specification
 ├── README.md                     # Bilingual overview

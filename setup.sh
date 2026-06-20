@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #
-# setup.sh — Cross-platform environment setup for market-research (macOS/Linux)
+# setup.sh — Cross-platform environment setup for MedicineMarket-Atlas (macOS/Linux)
 #
 # Usage:
 #   chmod +x setup.sh
@@ -40,7 +40,7 @@ header()  { printf "\n${BOLD}${CYAN}%s${RESET}\n" "$*"; }
 # 1. Welcome & OS detection
 # ---------------------------------------------------------------------------
 header "========================================"
-header "  Market Research — Environment Setup"
+header "  MedicineMarket-Atlas — Environment Setup"
 header "========================================"
 
 OS=""

@@ -14,52 +14,27 @@ subagent is available.
 Before executing any chain, the orchestrator MUST:
 
 1. Read the chain definition file to know the expected steps and outputs.
-2. Check `<project>/chain-outputs/` for existing output files matching chain step definitions.
-3. Check `<project>/progress.json` for authoritative progress state (if it exists and is valid).
-4. Determine the resume point using hybrid detection:
-   - **Primary**: Output file existence in chain-outputs/ (file must be non-empty, parseable JSON, minimum 50 bytes)
-   - **Secondary (authoritative)**: progress.json step status. If progress.json says "completed" but file is missing/invalid, FILE CHECK WINS — mark step as "pending"
+2. Run the inspection CLI:
+   ```bash
+   python .pi/scripts/check-progress.py PROJECT_DIR --chain CHAIN_NAME
+   ```
+   This inspects `<project>/chain-outputs/` and `<project>/progress.json` and reports which steps are finished, pending, or blocked.
+3. Treat artifact validity as the ground truth for completion. A step is complete only when its expected output file in `chain-outputs/` exists, is non-empty, is parseable JSON (or a valid markdown file), and its `reads` dependencies are valid.
+4. Determine the resume point from the inspection output. `progress.json` records the last known state, but it cannot override missing or invalid artifacts. If the file and the record disagree, the artifact wins.
 5. For parallel steps, check EACH sub-task output individually — skip only completed sub-tasks, not the entire parallel group.
-6. Present findings to user:
-
-```
-========================================
-Project: <project_name>
-Chain: <chain_name>
-========================================
-Prior progress detected:
-  ✓ Step 1: Planning (01-plan.json) — completed
-  ✓ Step 2a: Market research (02-market.json) — completed
-  ✗ Step 2b: Academic research (03-academic.json) — NOT started
-  ✗ Step 2c: Regulatory research (04-regulatory.json) — NOT started
-  ✗ Step 3: Product normalization — NOT started
-  ... (remaining steps)
-========================================
-Resume from step 2b (academic research)?
-  [Y] Resume — skip completed, continue from first incomplete step
-  [N] Restart — backup chain-outputs/ and start fresh
-  [Q] Quit — stop here
-========================================
-```
-
-7. On user choice:
-   - **Y (Resume)**: Skip completed steps. For each skipped step, validate its `reads` dependencies exist and are valid. If any dependency is missing/invalid, re-execute the dependency step first. Write progress.json with atomic write.
-   - **N (Restart)**: Backup `chain-outputs/` to `chain-outputs-backup-{YYYYMMDD-HHmmss}/`. Clear chain-outputs/. Reset progress.json to all "pending". Start from step 1.
-   - **Q (Quit)**: Stop execution. Do nothing.
+6. Present the inspection summary to the user and ask whether to resume, restart, or quit. Do not auto-skip steps without human confirmation.
 
 ### Detection Rules (implemented during inspection):
 
-1. **File validity check**: A file in chain-outputs/ is NOT considered "complete" unless:
+1. **File validity check**: A file in `chain-outputs/` is NOT considered "complete" unless:
    - File size > 50 bytes (not empty)
    - For .json files: parseable as valid JSON
    - For .md files: contains at least one markdown heading
    - File does NOT start with error indicators ("I do not have", "ERROR:", etc.)
 
-2. **Legacy fallback**: For step 1 (task-planner), if `01-plan.json` is missing but `research-plan.md` exists and is valid, treat step 1 as complete and use research-plan.md as the plan artifact.
+2. **Dependency validation**: Before skipping step N, check ALL files in its `reads` array from the chain definition. If any read dependency is missing or invalid, mark the step as "pending" (must re-execute). This prevents skipping steps whose inputs were never created or are corrupted.
 
-3. **Dependency validation**: Before skipping step N, check ALL files in its `reads` array from the chain definition. If any read dependency is missing or invalid, mark the step as "pending" (must re-execute). This prevents skipping steps whose inputs were never created or are corrupted.
-
-4. **Chain version check**: progress.json stores `chain_hash` (SHA-256 of chain file). On resume, re-hash the chain file and compare. If hash differs:
+3. **Chain version check**: progress.json stores `chain_hash` (SHA-256 of chain file). On resume, re-hash the chain file and compare. If hash differs:
    ```
    WARNING: Chain file has been modified since last run.
    Previous hash: abc123...
@@ -67,7 +42,7 @@ Resume from step 2b (academic research)?
    Existing progress may be invalid. Resume anyway? [Y/N]
    ```
 
-5. **Config/brief change detection**: progress.json stores `config_hash` and `brief_hash`. On resume, re-hash config.json and brief.md. If either hash differs:
+4. **Config/brief change detection**: progress.json stores `config_hash` and `brief_hash`. On resume, re-hash config.json and brief.md. If either hash differs:
    ```
    WARNING: Project configuration has changed since last run.
    (config.json or brief.md modified)
@@ -75,32 +50,32 @@ Resume from step 2b (academic research)?
    Resume anyway? [Y/N]
    ```
 
-6. **Cross-chain isolation**: progress.json stores `chain_name`. If the stored chain name doesn't match the current chain being executed:
+5. **Cross-chain isolation**: progress.json stores `chain_name`. If the stored chain name doesn't match the current chain being executed:
    ```
    NOTE: Existing progress is for '<stored_chain>', not '<current_chain>'.
    Treating project as fresh start for current chain.
    ```
    Do NOT use progress from a different chain.
 
-7. **Corrupted progress.json**: If progress.json exists but cannot be parsed as valid JSON, or fails schema validation:
+6. **Corrupted progress.json**: If progress.json exists but cannot be parsed as valid JSON, or fails schema validation:
    ```
    WARNING: progress.json is corrupted or invalid.
-   Falling back to file-existence detection only.
+   Falling back to artifact-existence detection only.
    ```
    Continue with file-existence detection. Do NOT crash.
 
 ### Progress File Management (implemented during chain execution):
 
-8. **Atomic writes**: When writing progress.json, ALWAYS:
+7. **Atomic writes**: When writing progress.json, ALWAYS:
    - Write to `progress.json.tmp` first
    - On successful write, rename `progress.json.tmp` → `progress.json`
    - This prevents corruption if the process crashes mid-write
 
-9. **Progress update timing**: Update progress.json IMMEDIATELY after each step completes (not batched at end). This ensures maximum progress preservation on interruption.
+8. **Progress update timing**: Update progress.json IMMEDIATELY after each step completes (not batched at end). This ensures maximum progress preservation on interruption.
 
 ### Per-Subtask Granularity (for parallel steps):
 
-When a chain step contains a `"parallel"` array (e.g., step 2 in full-market-review with 3 sub-agents):
+When a chain step contains a `"parallel"` array (e.g. step 2 in full-market-review with 3 sub-agents):
 - Check each sub-agent's output file individually
 - Skip completed sub-agents, execute only incomplete ones
 - Do NOT re-execute completed sub-agents within a parallel group
@@ -153,7 +128,7 @@ For a new project:
 ## PROJECT STRUCTURE
 
 ```
-market-research/
+medicinemarket-atlas/
 ├── AGENTS.md              # Orchestrator role + workflow (this file)
 ├── SYSTEM.md              # Full operating specification (322 lines)
 ├── .pi/
@@ -244,7 +219,7 @@ pip install jsonschema openpyxl
 
 ```bash
 # Inspect project progress
-python .pi/scripts/check-progress.py projects/<name>/
+python .pi/scripts/check-progress.py projects/<name>/ --chain CHAIN_NAME
 
 # Validate progress.json against schema
 python -c "import jsonschema, json; jsonschema.validate(json.load(open('projects/<name>/progress.json')), json.load(open('.pi/schemas/progress.schema.json')))"

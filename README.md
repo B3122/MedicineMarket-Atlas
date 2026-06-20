@@ -1,6 +1,6 @@
 <div align="center">
 
-# 🔬 药镜 · PharmaLens
+# 🔬 MedicineMarket-Atlas
 
 **本地化 AI Agent 驱动的医药及保健品市场调研系统**  
 **A Local, Agent-Driven Pharmaceutical & Health-Product Market Research System**
@@ -12,9 +12,9 @@
 
 </div>
 
-> **药镜（PharmaLens）** 将一份调研需求书（research brief）转化为可复现、有源可查的市场情报或证据审查报告。系统通过 9 个专项 Agent 协作完成计划、调研、归一、分析、报告与审计，全程本地化运行，数据不留痕。
+> **MedicineMarket-Atlas** 将一份调研需求书（research brief）转化为可复现、有源可查的市场情报或证据审查报告。系统通过 9 个专项 Agent 协作完成计划、调研、归一、分析、报告与审计，全程本地化运行，数据不留痕。
 >
-> **PharmaLens** turns a research brief into reproducible, source-grounded market intelligence or evidence-review reports. Nine specialist agents collaborate on planning, research, normalization, analysis, reporting, and auditing — all running locally.
+> **MedicineMarket-Atlas** turns a research brief into reproducible, source-grounded market intelligence or evidence-review reports. Nine specialist agents collaborate on planning, research, normalization, analysis, reporting, and auditing — all running locally.
 
 ---
 
@@ -28,8 +28,8 @@ Choose your OS and copy the matching commands. The setup script auto-detects you
 
 ```bash
 # 1. 克隆仓库 / Clone the repo
-git clone https://github.com/B3122/PharmaLens.git pharmalens
-cd pharmalens
+git clone https://github.com/B3122/MedicineMarket-Atlas.git medicinemarket-atlas
+cd medicinemarket-atlas
 
 # 2. 运行安装脚本 / Run the installer
 chmod +x setup.sh
@@ -57,8 +57,8 @@ Windows users need **Git Bash** or **WSL (recommended)**, because the `competito
 3. 在 WSL 中运行：
 
    ```bash
-   git clone https://github.com/B3122/PharmaLens.git pharmalens
-   cd pharmalens
+   git clone https://github.com/B3122/MedicineMarket-Atlas.git medicinemarket-atlas
+   cd medicinemarket-atlas
    chmod +x setup.sh
    ./setup.sh
    pi
@@ -71,8 +71,8 @@ Windows users need **Git Bash** or **WSL (recommended)**, because the `competito
 3. 运行：
 
    ```bash
-   git clone https://github.com/B3122/PharmaLens.git pharmalens
-   cd pharmalens
+   git clone https://github.com/B3122/MedicineMarket-Atlas.git medicinemarket-atlas
+   cd medicinemarket-atlas
    chmod +x setup.sh
    ./setup.sh
    pi
@@ -99,7 +99,7 @@ After installation, run your first research chain in 3 steps:
 
 ```bash
 # 1. 进入项目 / Enter project
-cd pharmalens
+cd medicinemarket-atlas
 
 # 2. 启动 Pi / Launch Pi
 pi
@@ -241,14 +241,17 @@ Edit `brief.md` and `config.json` to replace the placeholders.
 
 ### 断点续跑 · Resume from Checkpoint
 
-系统支持断点续跑。重新执行相同命令即可检测已完成步骤并提示是否继续。
+重新执行原始链命令即可。主控 Agent 会在运行前调用 `check-progress.py` 检测已完成步骤，并提示继续 / 重启 / 退出。
 
-The system supports checkpoint resume. Re-run the same command to detect completed steps and prompt you to continue.
+Re-run the original chain command. The orchestrator will call `check-progress.py` before execution to detect completed steps and prompt you to resume, restart, or quit.
+
+产物文件的有效性是判断完成与否的唯一依据；`progress.json` 不会覆盖缺失或无效的产物。
+Artifact validity is the ground truth for completion; `progress.json` does not override missing or invalid artifacts.
 
 ### 查看进度 · Check Progress
 
 ```bash
-python .pi/scripts/check-progress.py projects/<project-name>/
+python .pi/scripts/check-progress.py projects/<project-name>/ --chain full-market-review
 ```
 
 ---
@@ -256,7 +259,7 @@ python .pi/scripts/check-progress.py projects/<project-name>/
 ## 📁 项目结构 · Project Structure
 
 ```
-pharmalens/
+medicinemarket-atlas/
 ├── AGENTS.md                     # 主控 Agent 角色与工作流规范
 ├── SYSTEM.md                     # 完整操作规范
 ├── README.md                     # 本文件

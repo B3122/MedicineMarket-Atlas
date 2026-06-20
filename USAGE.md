@@ -4,8 +4,8 @@
 
 ```bash
 # 1. Clone and enter the repository
-git clone <repo-url> market-research
-cd market-research
+git clone <repo-url> medicinemarket-atlas
+cd medicinemarket-atlas
 
 # 2. Run the installer
 chmod +x setup.sh

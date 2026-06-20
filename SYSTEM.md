@@ -97,20 +97,25 @@ Before running a chain:
 # Checkpoint and Resume Policy
 
 The orchestrator MUST inspect `chain-outputs/` and `progress.json` before
-executing a chain. Use a hybrid detection approach:
+executing a chain. Treat artifact validity as the ground truth for completion.
 
-1. file existence in `chain-outputs/` serves as the primary signal;
-2. `progress.json` provides the authoritative override — file absence
-   cannot overrule a recorded status, and file presence must reconcile
-   with the recorded status.
-
-Track progress at per-subtask granularity. A parallel step may complete
-some subtasks while others remain unstarted; resume must honor this
-partial state.
+1. Run the inspection CLI for the project and chain:
+   ```bash
+   python .pi/scripts/check-progress.py PROJECT_DIR --chain CHAIN_NAME
+   ```
+2. A step is considered complete only if its expected artifact in
+   `chain-outputs/` is valid: it exists, is non-empty, parses correctly,
+   and its `reads` dependencies are valid.
+3. `progress.json` records the last known state, but it does not override
+   missing or invalid artifacts. If recorded status and artifact state
+   disagree, the artifact wins.
+4. Track progress at per-subtask granularity. A parallel step may complete
+   some subtasks while others remain unstarted; resume must honor this
+   partial state.
 
 When prior progress is detected:
 1. present the user with a completion summary showing which steps are
-   finished, in progress, and unstarted;
+   finished and which are pending;
 2. prompt the user to choose resume or restart;
 3. do not auto-skip steps without user confirmation.
 
@@ -118,9 +123,7 @@ When the user chooses restart:
 1. back up existing `chain-outputs/` and `progress.json` to a timestamped
    directory before clearing;
 2. write `progress.json` atomically — write to a temporary file first,
-   then rename to prevent corruption during concurrent access;
-3. scope each chain-name key to its own status block so that multiple
-   chains do not interfere.
+   then rename to prevent corruption during concurrent access.
 
 # Source hierarchy
 
