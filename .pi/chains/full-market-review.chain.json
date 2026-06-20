@@ -1,0 +1,153 @@
+{
+  "name": "full-market-review",
+  "description": "Complete pharmaceutical or health-product market, evidence, claim, competitor, writing, and audit workflow.",
+  "chain": [
+    {
+      "agent": "task-planner",
+      "progress": true,
+      "progressOutput": {"01-plan.json": "plan"},
+      "phase": "Planning",
+      "label": "Create research plan",
+      "task": "Read {task} and create a structured research plan.",
+      "as": "plan",
+      "output": "01-plan.json",
+      "outputMode": "file-only",
+      "outputSchema": {
+        "type": "object",
+        "required": [
+          "research_question",
+          "market",
+          "products",
+          "platform_tasks",
+          "academic_questions",
+          "regulatory_questions"
+        ],
+        "properties": {
+          "research_question": { "type": "string" },
+          "market": { "type": "string" },
+          "products": {
+            "type": "array",
+            "items": { "type": "object" }
+          },
+          "platform_tasks": {
+            "type": "array",
+            "items": { "type": "object" }
+          },
+          "academic_questions": {
+            "type": "array",
+            "items": { "type": "object" }
+          },
+          "regulatory_questions": {
+            "type": "array",
+            "items": { "type": "object" }
+          }
+        }
+      }
+    },
+    {
+      "parallel": [
+        {
+          "agent": "market-researcher",
+          "progress": true,
+          "progressOutput": {"02-market.json": "market"},
+          "phase": "Research",
+          "label": "Market and platform research",
+          "task": "Execute the market and platform portion of {outputs.plan}. Save source-grounded findings.",
+          "as": "market",
+          "output": "02-market.json",
+          "outputMode": "file-only"
+        },
+        {
+          "agent": "academic-researcher",
+          "progress": true,
+          "progressOutput": {"03-academic.json": "academic"},
+          "phase": "Research",
+          "label": "Academic evidence research",
+          "task": "Execute the academic evidence portion of {outputs.plan}.",
+          "as": "academic",
+          "output": "03-academic.json",
+          "outputMode": "file-only"
+        },
+        {
+          "agent": "regulatory-researcher",
+          "progress": true,
+          "progressOutput": {"04-regulatory.json": "regulatory"},
+          "phase": "Research",
+          "label": "Regulatory research",
+          "task": "Execute the regulatory portion of {outputs.plan}.",
+          "as": "regulatory",
+          "output": "04-regulatory.json",
+          "outputMode": "file-only"
+        }
+      ],
+      "concurrency": 3,
+      "failFast": false
+    },
+    {
+      "agent": "product-normalizer",
+      "progress": true,
+      "progressOutput": {"05-normalized-products.json": "normalized"},
+      "phase": "Normalization",
+      "label": "Normalize product identities",
+      "reads": ["02-market.json", "04-regulatory.json"],
+      "task": "Normalize every product, SKU, package, formulation, dose, and regional version.",
+      "as": "normalized",
+      "output": "05-normalized-products.json",
+      "outputMode": "file-only"
+    },
+    {
+      "parallel": [
+        {
+          "agent": "competitor-analyst",
+          "progress": true,
+          "progressOutput": {"06-competitors.json": "competitors"},
+          "phase": "Analysis",
+          "label": "Competitor analysis",
+          "reads": ["02-market.json", "05-normalized-products.json"],
+          "task": "Produce normalized competitor analysis, price calculations, and positioning.",
+          "as": "competitors",
+          "output": "06-competitors.json",
+          "outputMode": "file-only"
+        },
+        {
+          "agent": "claim-verifier",
+          "progress": true,
+          "progressOutput": {"07-claim-review.json": "claims"},
+          "phase": "Analysis",
+          "label": "Claim verification",
+          "reads": ["02-market.json", "03-academic.json", "04-regulatory.json", "05-normalized-products.json"],
+          "task": "Verify every commercial claim against academic and regulatory evidence.",
+          "as": "claims",
+          "output": "07-claim-review.json",
+          "outputMode": "file-only"
+        }
+      ],
+      "concurrency": 2,
+      "failFast": false
+    },
+    {
+      "agent": "report-writer",
+      "progress": true,
+      "progressOutput": {"08-report.md": "report"},
+      "phase": "Writing",
+      "label": "Write report",
+      "reads": ["01-plan.json", "02-market.json", "03-academic.json", "04-regulatory.json", "05-normalized-products.json", "06-competitors.json", "07-claim-review.json"],
+      "task": "Write the complete source-grounded report.",
+      "as": "report",
+      "output": "08-report.md",
+      "outputMode": "file-only"
+    },
+    {
+      "agent": "report-auditor",
+      "progress": true,
+      "progressOutput": {"09-audit.json": "audit"},
+      "phase": "Audit",
+      "label": "Audit report",
+      "reads": ["02-market.json", "03-academic.json", "04-regulatory.json", "05-normalized-products.json", "06-competitors.json", "07-claim-review.json", "08-report.md"],
+      "task": "Audit the report and return a pass/fail result with corrections.",
+      "as": "audit",
+      "output": "09-audit.json",
+      "outputMode": "file-only"
+    }
+  ]
+}

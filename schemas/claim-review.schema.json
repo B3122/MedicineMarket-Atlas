@@ -1,0 +1,117 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Claim Review",
+  "description": "Validates claim verification output. Each record evaluates whether published evidence supports a specific commercial claim, with evidence mapping and regulatory compatibility.",
+  "type": "object",
+  "additionalProperties": true,
+  "required": [
+    "claim_id",
+    "commercial_wording",
+    "product_spec",
+    "evidence_mapping",
+    "support_classification",
+    "regulatory_compatibility",
+    "reviewer_notes"
+  ],
+  "properties": {
+    "claim_id": {
+      "$ref": "_defs.json#/definitions/identifier"
+    },
+    "commercial_wording": {
+      "type": "string",
+      "description": "Exact original wording of the commercial claim as it appeared on the source."
+    },
+    "product_spec": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["product_name", "ingredient", "dose", "formulation"],
+      "properties": {
+        "product_name": {
+          "type": "string",
+          "description": "Product name as displayed. Use \"unknown\" when not identified."
+        },
+        "ingredient": {
+          "type": "string",
+          "description": "Active ingredient or key component the claim refers to. Use \"unknown\" when not specified."
+        },
+        "dose": {
+          "type": "string",
+          "description": "Dose referenced by the claim (e.g. '500 mg', '10 mL'). Use \"unknown\" when not stated."
+        },
+        "formulation": {
+          "type": "string",
+          "description": "Formulation type (e.g. 'tablet', 'capsule', 'liquid', 'cream'). Use \"unknown\" when not stated."
+        }
+      },
+      "description": "Product specification that the claim refers to."
+    },
+    "evidence_mapping": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": true,
+        "required": ["evidence_id", "relevance", "direction"],
+        "properties": {
+          "evidence_id": {
+            "type": "string",
+            "description": "Reference to an evidence record source_id."
+          },
+          "relevance": {
+            "type": "string",
+            "enum": ["direct", "partial", "indirect", "not_applicable"],
+            "description": "How directly the evidence applies to this claim. Use \"not_applicable\" when the evidence was reviewed but found irrelevant."
+          },
+          "direction": {
+            "type": "string",
+            "enum": ["supports", "contradicts", "neutral"],
+            "description": "Direction of the evidence relative to the claim."
+          }
+        }
+      },
+      "description": "Mapping of evidence records to this claim. Empty array if no evidence was found."
+    },
+    "support_classification": {
+      "$ref": "_defs.json#/definitions/claimSupportLevel"
+    },
+    "regulatory_compatibility": {
+      "type": "string",
+      "enum": ["compliant", "non_compliant", "requires_qualification", "unknown"],
+      "description": "Whether the claim is compatible with applicable regulatory requirements. Use \"unknown\" when the relevant regulation has not been reviewed."
+    },
+    "reviewer_notes": {
+      "type": "string",
+      "description": "Reviewer observations about evidence quality, unresolved conflicts, or qualifications that a reader should consider."
+    },
+    "population_represented": {
+      "type": "boolean",
+      "description": "Whether the claimed population is represented in the evidence."
+    },
+    "dose_comparable": {
+      "type": "boolean",
+      "description": "Whether the study dose is comparable to the product dose."
+    },
+    "outcome_directly_measured": {
+      "type": "boolean",
+      "description": "Whether the claimed outcome was directly measured in the evidence."
+    },
+    "magnitude_supported": {
+      "type": "boolean",
+      "description": "Whether the claimed magnitude of effect is supported by the evidence."
+    },
+    "causal_language_justified": {
+      "type": "boolean",
+      "description": "Whether causal language in the claim is justified by the study design."
+    },
+    "safety_qualifications_omitted": {
+      "type": "boolean",
+      "description": "Whether the claim omits relevant safety qualifications present in the evidence."
+    },
+    "qualified_alternative_wording": {
+      "type": "string",
+      "description": "Evidence-grounded alternative wording for the claim. Use \"not_applicable\" when no qualified wording is appropriate."
+    },
+    "reviewed_date": {
+      "$ref": "_defs.json#/definitions/dateString"
+    }
+  }
+}

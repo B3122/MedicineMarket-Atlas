@@ -1,0 +1,6 @@
+source_id,source_type,platform,title,url,collection_date,collection_method,language,region,data_category,extraction_confidence
+tmall-20250620-001,web_page,tmall,Example Corp PM-Extra 500mg 30 Tablets - Product Page,https://www.example-tmall.com/item/12345,2025-06-20,playwright,zh,CN,pricing,high
+jd-20250620-001,web_page,jd,Example Corp PM-Extra 500mg 30 Tablets - JD Listing,https://www.example-jd.com/item/67890,2025-06-20,playwright,zh,CN,product_identity,high
+official-20250620-001,web_page,official,Example Corp PM-Extra Product Information,https://www.example-official.com/product/54321,2025-06-19,manual_browse,en,US,regulatory_status,medium
+xhs-20250620-001,social_post,xhs,User Review of PM-Extra Tablets,https://www.example-xhs.com/post/abcdef,2025-06-20,api,zh,CN,consumer_narrative,low
+pubmed-20250619-001,academic_article,pubmed,Clinical Trial of Paracetamol for Pain Management,https://doi.org/10.1234/example,2025-06-19,mcp_tool,en,US,clinical_evidence,high

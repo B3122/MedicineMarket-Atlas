@@ -1,0 +1,94 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://market-research.local/schemas/progress.schema.json",
+  "title": "Research Progress Checkpoint",
+  "description": "Checkpoint and resume state for the market-research orchestrator chain runner. Tracks which chain was running, what project config+brief it used, and the status of every step. Written by the orchestrator at each checkpoint and read on resume.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "chain_name",
+    "chain_hash",
+    "config_hash",
+    "brief_hash",
+    "last_run",
+    "steps"
+  ],
+  "properties": {
+    "chain_name": {
+      "type": "string",
+      "description": "Name of the chain this progress is for (e.g., full-market-review, quick-competitor-review, evidence-only)."
+    },
+    "chain_hash": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$",
+      "description": "SHA-256 hex digest of the chain file content at the time of the last run. Used to detect chain definition changes."
+    },
+    "config_hash": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$",
+      "description": "SHA-256 hex digest of the project config.json at the time of the last run. Used to detect configuration changes."
+    },
+    "brief_hash": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$",
+      "description": "SHA-256 hex digest of the project brief.md at the time of the last run. Used to detect brief changes."
+    },
+    "last_run": {
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}([+-]\\d{2}:\\d{2}|Z)$",
+      "description": "ISO 8601 datetime with timezone of the last execution (e.g., 2026-06-20T14:30:00+08:00)."
+    },
+    "steps": {
+      "type": "array",
+      "description": "Ordered list of steps for this chain. Each element tracks the execution state of one agent or action.",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "phase",
+          "label",
+          "status",
+          "output"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_-]*$",
+            "description": "Step identifier matching the chain definition (e.g., market-researcher, product-normalizer, claim-verifier)."
+          },
+          "phase": {
+            "type": "string",
+            "description": "Phase name this step belongs to (e.g., Research, Normalization, Verification, Audit, Report)."
+          },
+          "label": {
+            "type": "string",
+            "description": "Human-readable step label for display (e.g., Market Research, Product Normalization, Claim Verification)."
+          },
+          "status": {
+            "type": "string",
+            "enum": ["completed", "failed", "skipped", "pending"],
+            "description": "Execution status of this step."
+          },
+          "output": {
+            "type": "string",
+            "description": "Expected output filename or path for the artifact this step produces. Use \"not_applicable\" if the step produces no file artifact."
+          },
+          "output_valid": {
+            "type": "boolean",
+            "description": "Whether the output file was validated successfully. Only meaningful when status is completed. Use absent or false to indicate validation not yet performed or failed."
+          },
+          "completed_at": {
+            "type": "string",
+            "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}([+-]\\d{2}:\\d{2}|Z)$",
+            "description": "ISO 8601 datetime when the step finished execution. Present only when the step has been attempted (completed, failed, or skipped)."
+          },
+          "error": {
+            "type": "string",
+            "description": "Error message or exception summary when status is failed. Use \"unknown\" if a failure occurred with no actionable error message. Absent when status is completed, skipped, or pending."
+          }
+        }
+      }
+    }
+  }
+}

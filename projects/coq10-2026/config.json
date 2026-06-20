@@ -1,0 +1,9 @@
+{
+  "project_name": "EXAMPLE — CoQ10 2026 Template",
+  "product_category": "dietary supplement",
+  "jurisdiction": "[PLACEHOLDER: e.g., CN — China]",
+  "target_platforms": ["[PLACEHOLDER]"],
+  "competitor_limit": 5,
+  "report_mode": "full-market-review",
+  "is_template": true
+}

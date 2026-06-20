@@ -1,0 +1,134 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Listing Record",
+  "description": "A listing record represents one offer or product page observed on a specific platform at a specific time. Multiple listings may refer to the same product.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "listing_id",
+    "source_id",
+    "title",
+    "price",
+    "currency",
+    "price_type",
+    "seller_type",
+    "collection_date"
+  ],
+  "properties": {
+    "listing_id": {
+      "type": "string",
+      "pattern": "^ls-[a-z][a-z0-9]*-\\d{8}-\\d{3}$",
+      "description": "Unique identifier for this listing observation: ls-{platform}-{YYYYMMDD}-{sequential}."
+    },
+    "source_id": { "$ref": "_defs.json#/definitions/source_id_ref" },
+    "product_master_id": { "$ref": "_defs.json#/definitions/product_master_id" },
+    "product_version_id": { "$ref": "_defs.json#/definitions/product_version_id" },
+    "title": {
+      "type": "string",
+      "description": "The listing title as displayed on the platform page."
+    },
+    "price": {
+      "type": "number",
+      "description": "Observed price as a numeric value. Use -1 if price is genuinely not displayed."
+    },
+    "currency": { "$ref": "_defs.json#/definitions/currency" },
+    "original_price": {
+      "type": "string",
+      "description": "The raw price string as displayed (e.g., \"¥129\", \"$19.99\")."
+    },
+    "price_type": { "$ref": "_defs.json#/definitions/price_type_listing" },
+    "price_condition": {
+      "type": "string",
+      "description": "Conditions tied to this price (e.g., \"first_order_only\", \"min_purchase_2\", \"subscription_required\", \"flash_sale\")."
+    },
+    "package_size": {
+      "type": "string",
+      "description": "Package size as displayed (e.g., \"30 tablets\", \"100 mL\", \"2-pack\")."
+    },
+    "package_quantity": {
+      "type": "number",
+      "description": "Number of dosage units in the package as a numeric value (e.g., 30)."
+    },
+    "daily_dose_used": {
+      "type": "number",
+      "description": "Numeric daily dose value used in daily cost calculation."
+    },
+    "daily_dose_unit": {
+      "type": "string",
+      "description": "Unit of the daily dose (e.g., 'tablet', 'capsule')."
+    },
+    "daily_dose_source": {
+      "type": "string",
+      "enum": ["label", "official_site", "clinical_guideline", "assumption"],
+      "description": "Source of the daily dose information."
+    },
+    "brand": {
+      "type": "string",
+      "description": "Brand name as it appears on the official product or label."
+    },
+    "manufacturer": {
+      "type": "string",
+      "description": "Manufacturer or distributor name."
+    },
+    "standard_name": {
+      "type": "string",
+      "description": "Standardized product name following a naming convention."
+    },
+    "generic_name": {
+      "type": "string",
+      "description": "Active ingredient or generic name."
+    },
+    "dosage_form": {
+      "type": "string",
+      "description": "Pharmaceutical dosage form (e.g., tablet, capsule)."
+    },
+    "active_ingredients": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["name", "per_unit_dose", "per_unit_dose_unit", "original_per_unit_dose"],
+        "properties": {
+          "name": { "type": "string" },
+          "per_unit_dose": { "type": "string" },
+          "per_unit_dose_unit": { "type": "string" },
+          "original_per_unit_dose": { "type": "string" }
+        }
+      },
+      "description": "List of active ingredients."
+    },
+    "region": { "$ref": "_defs.json#/definitions/region" },
+    "seller_type": { "$ref": "_defs.json#/definitions/seller_type" },
+    "seller_name": {
+      "type": "string",
+      "description": "Displayed seller or store name."
+    },
+    "seller_region": { "$ref": "_defs.json#/definitions/region" },
+    "platform_metrics": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "List of platform metric IDs observed on this listing."
+    },
+    "in_stock": {
+      "type": "boolean",
+      "description": "Whether the listing shows the item as in stock. true, false, or omitted if unknown."
+    },
+    "shipping_region": { "$ref": "_defs.json#/definitions/region" },
+    "shipping_cost": {
+      "type": "number",
+      "description": "Shipping cost if displayed separately. Use 0 for free shipping, omit if unknown."
+    },
+    "shipping_currency": { "$ref": "_defs.json#/definitions/currency" },
+    "collection_date": { "$ref": "_defs.json#/definitions/date_iso8601" },
+    "collection_datetime": { "$ref": "_defs.json#/definitions/datetime_iso8601" },
+    "page_position": {
+      "type": "string",
+      "description": "Where on the page this listing appeared: search_result_N, category_page_N, promotion_banner, featured."
+    },
+    "data_quality_notes": {
+      "type": "string",
+      "description": "Notes about data quality concerns (dynamic pricing, login-gated price, etc.)."
+    },
+    "record_version": { "$ref": "_defs.json#/definitions/record_version" }
+  }
+}

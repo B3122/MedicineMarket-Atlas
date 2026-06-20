@@ -1,0 +1,100 @@
+{
+  "defaultThinkingLevel": "high",
+  "hideThinkingBlock": false,
+  "quietStartup": false,
+  "enableSkillCommands": true,
+  "sessionDir": ".pi/sessions",
+  "compaction": {
+    "enabled": true,
+    "reserveTokens": 24000,
+    "keepRecentTokens": 28000
+  },
+  "retry": {
+    "enabled": true,
+    "maxRetries": 3
+  },
+  "packages": [
+    "npm:pi-subagents",
+    "npm:pi-web-access"
+  ],
+  "skills": [
+    "skills"
+  ],
+  "subagents": {
+    "disableBuiltins": false,
+    "maxSubagentDepth": 1,
+    "parallel": {
+      "maxTasks": 8,
+      "concurrency": 3
+    },
+    "agentOverrides": {
+      "task-planner": {
+        "thinking": "high",
+        "inheritProjectContext": true,
+        "inheritSkills": true,
+        "skills": [
+          "product-market-research"
+        ]
+      },
+      "product-normalizer": {
+        "thinking": "high",
+        "inheritProjectContext": true,
+        "inheritSkills": false
+      },
+      "market-researcher": {
+        "thinking": "medium",
+        "inheritProjectContext": true,
+        "inheritSkills": true,
+        "skills": [
+          "product-market-research"
+        ]
+      },
+      "academic-researcher": {
+        "thinking": "high",
+        "inheritProjectContext": true,
+        "inheritSkills": true,
+        "skills": [
+          "evidence-appraisal"
+        ]
+      },
+      "regulatory-researcher": {
+        "thinking": "high",
+        "inheritProjectContext": true,
+        "inheritSkills": false
+      },
+      "competitor-analyst": {
+        "thinking": "high",
+        "inheritProjectContext": true,
+        "inheritSkills": true,
+        "skills": [
+          "product-market-research"
+        ]
+      },
+      "claim-verifier": {
+        "thinking": "high",
+        "inheritProjectContext": true,
+        "inheritSkills": true,
+        "skills": [
+          "evidence-appraisal"
+        ]
+      },
+      "report-writer": {
+        "thinking": "high",
+        "inheritProjectContext": true,
+        "inheritSkills": true,
+        "skills": [
+          "report-generation"
+        ]
+      },
+      "report-auditor": {
+        "thinking": "high",
+        "inheritProjectContext": true,
+        "inheritSkills": true,
+        "skills": [
+          "evidence-appraisal",
+          "report-generation"
+        ]
+      }
+    }
+  }
+}

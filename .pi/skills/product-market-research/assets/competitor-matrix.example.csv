@@ -1,0 +1,6 @@
+product,brand,version,dosage_form,dose,spec,price,price_type,normalized_price,daily_cost,claims,channel,data_date,data_quality,main_limitations
+ExampleCorp PainRelief Max,ExPain-M,2024-10,tablet,"500 mg","30 tablets",129.00,list_price,4.30,8.60,"Rapid-acting formula, 2x faster absorption","tmall,jd,official",2025-06-20,high,none_recorded
+ExampleCorp PainRelief Junior,ExPain-J,2024-10,tablet,"250 mg","30 tablets",89.00,list_price,2.97,5.93,"Gentle on stomach, suitable for children","tmall,jd",2025-06-20,high,"price from single listing only"
+GenericPharma Paracetamol 500,GenP-500,2025-01,tablet,"500 mg","20 tablets",45.00,sale_price,2.25,4.50,"Economy pack, best value per dose",jd,2025-06-20,medium,"sale price only, not regular list price"
+HealthCo RapidCool Gel,HC-RCool,2024-08,gel,"5% w/w","50 g tube",168.00,list_price,3.36,16.80,"Cooling gel with natural menthol, no greasy residue","tmall,official",2025-06-20,high,"limited seasonal availability in winter"
+PharmaPlus SleepAid,PhP-Sleep,2024-12,capsule,"25 mg","14 capsules",75.00,list_price,5.36,10.71,"Non-habit forming, plant-based melatonin","tmall,jd,official",2025-06-20,medium,"self-reported efficacy claims not verified"

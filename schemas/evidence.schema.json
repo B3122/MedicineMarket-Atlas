@@ -1,0 +1,160 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Evidence Record",
+  "description": "Validates an academic evidence record extracted from a published study, review, guideline, or authoritative source. One record per included study or source.",
+  "type": "object",
+  "additionalProperties": true,
+  "required": [
+    "source_id",
+    "citation",
+    "study_design",
+    "population",
+    "intervention",
+    "outcomes",
+    "effect_estimates",
+    "risk_of_bias",
+    "applicability",
+    "evidence_level"
+  ],
+  "properties": {
+    "source_id": {
+      "$ref": "_defs.json#/definitions/identifier"
+    },
+    "citation": {
+      "$ref": "_defs.json#/definitions/citation"
+    },
+    "study_design": {
+      "type": "string",
+      "enum": [
+        "rct",
+        "systematic_review",
+        "meta_analysis",
+        "observational_cohort",
+        "observational_case_control",
+        "cross_sectional",
+        "case_report",
+        "expert_opinion",
+        "unknown"
+      ],
+      "description": "Study design classification. Use \"unknown\" when the design cannot be determined from the source."
+    },
+    "population": {
+      "type": "string",
+      "description": "Description of the study population including key demographics, health status, and sample size. Use \"unknown\" when not reported."
+    },
+    "intervention": {
+      "type": "string",
+      "description": "Description of the intervention, exposure, or comparator including dose, route, frequency, and duration. Use \"unknown\" when not reported."
+    },
+    "comparator": {
+      "type": "string",
+      "description": "Description of the comparator or control condition. Use \"not_applicable\" for single-arm or uncontrolled designs."
+    },
+    "outcomes": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1,
+      "description": "Primary and relevant secondary outcomes assessed in the study."
+    },
+    "effect_estimates": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": true,
+        "required": ["metric", "value", "unit"],
+        "properties": {
+          "metric": {
+            "type": "string",
+            "description": "Effect metric (e.g. 'RR', 'OR', 'HR', 'MD', 'SMD', 'proportion'). Use \"unknown\" when unclear."
+          },
+          "value": {
+            "type": "string",
+            "description": "Point estimate value as a string to preserve precision. Use \"unknown\" when not reported."
+          },
+          "ci_lower": {
+            "type": "string",
+            "description": "Lower bound of the 95% confidence interval. Use \"unknown\" when not reported."
+          },
+          "ci_upper": {
+            "type": "string",
+            "description": "Upper bound of the 95% confidence interval. Use \"unknown\" when not reported."
+          },
+          "unit": {
+            "type": "string",
+            "description": "Unit of the effect estimate. Use \"not_applicable\" for unitless metrics."
+          }
+        }
+      },
+      "description": "Quantified effect estimates extracted from the study. Empty array if no quantitative results are available."
+    },
+    "risk_of_bias": {
+      "type": "string",
+      "enum": ["low", "moderate", "high", "critical", "unknown"],
+      "description": "Assessed risk of bias for this study. Use \"unknown\" when formal assessment was not performed or information is insufficient."
+    },
+    "applicability": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["population_match", "dose_match", "formulation_match", "outcome_match"],
+      "properties": {
+        "population_match": {
+          "type": "string",
+          "enum": ["high", "moderate", "low", "unknown"],
+          "description": "Degree to which the study population matches the target population."
+        },
+        "dose_match": {
+          "type": "string",
+          "enum": ["high", "moderate", "low", "unknown", "not_applicable"],
+          "description": "Degree to which the study dose matches the target product dose. Use \"not_applicable\" for non-intervention studies."
+        },
+        "formulation_match": {
+          "type": "string",
+          "enum": ["high", "moderate", "low", "unknown", "not_applicable"],
+          "description": "Degree to which the study formulation matches the target product formulation. Use \"not_applicable\" when formulation is not relevant."
+        },
+        "outcome_match": {
+          "type": "string",
+          "enum": ["high", "moderate", "low", "unknown"],
+          "description": "Degree to which the study outcomes match the claimed or questioned outcomes."
+        }
+      },
+      "description": "Applicability assessment evaluating how well the study matches the target product, population, and context."
+    },
+    "evidence_level": {
+      "$ref": "_defs.json#/definitions/evidenceLevel"
+    },
+    "sample_size": {
+      "type": "string",
+      "description": "Total sample size or number of participants. Use \"unknown\" when not reported."
+    },
+    "duration": {
+      "type": "string",
+      "description": "Study duration or follow-up period. Use \"unknown\" when not reported."
+    },
+    "adverse_events": {
+      "type": "string",
+      "description": "Summary of adverse events reported. Use \"unknown\" when not reported; \"not_applicable\" when safety was not assessed."
+    },
+    "funding": {
+      "type": "string",
+      "description": "Funding source. Use \"unknown\" when not reported."
+    },
+    "conflicts_of_interest": {
+      "type": "string",
+      "description": "Declared conflicts of interest. Use \"unknown\" when not reported."
+    },
+    "limitations": {
+      "type": "string",
+      "description": "Study limitations noted by the authors or reviewer. Use \"unknown\" when not assessed."
+    },
+    "extractor_notes": {
+      "type": "string",
+      "description": "Reviewer notes about extraction quality, ambiguity, or data-access issues."
+    },
+    "extraction_date": {
+      "$ref": "_defs.json#/definitions/dateString"
+    }
+  }
+}

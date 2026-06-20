@@ -1,0 +1,109 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Price Observation Record",
+  "description": "A price observation is a single measured price point for a product, listing, or combination. Multiple price observations can be derived from one listing record when different price types, quantities, or promotions apply.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "observation_id",
+    "source_id",
+    "price",
+    "currency",
+    "price_type"
+  ],
+  "properties": {
+    "observation_id": {
+      "type": "string",
+      "pattern": "^po-[a-z][a-z0-9]*-\\d{8}-\\d{3}$",
+      "description": "Unique identifier: po-{platform}-{YYYYMMDD}-{sequential}."
+    },
+    "source_id": { "$ref": "_defs.json#/definitions/source_id_ref" },
+    "listing_id": {
+      "type": "string",
+      "pattern": "^ls-[a-z][a-z0-9]*-\\d{8}-\\d{3}$",
+      "description": "Listing record ID if this observation was derived from a listing."
+    },
+    "product_master_id": { "$ref": "_defs.json#/definitions/product_master_id" },
+    "product_version_id": { "$ref": "_defs.json#/definitions/product_version_id" },
+    "price": {
+      "type": "number",
+      "description": "Numeric price value in the observation currency."
+    },
+    "currency": { "$ref": "_defs.json#/definitions/currency" },
+    "original_price": {
+      "type": "string",
+      "description": "Raw price string as observed."
+    },
+    "price_type": { "$ref": "_defs.json#/definitions/price_type_source" },
+    "package_quantity": {
+      "type": "number",
+      "description": "Number of dosage units this price covers."
+    },
+    "unit_price": {
+      "type": "number",
+      "description": "Normalized price per single dosage unit. null when package_quantity is missing."
+    },
+    "unit_price_currency": { "$ref": "_defs.json#/definitions/currency" },
+    "unit_price_unit": {
+      "type": "string",
+      "description": "Unit for the unit price (e.g., \"per_tablet\", \"per_mL\", \"per_g\")."
+    },
+    "daily_cost": {
+      "type": "number",
+      "description": "Normalized cost per day based on the labeled or declared daily dose. null when dose is unknown."
+    },
+    "daily_cost_currency": { "$ref": "_defs.json#/definitions/currency" },
+    "daily_cost_source": {
+      "type": "string",
+      "enum": ["label", "official_site", "clinical_guideline", "assumption"],
+      "description": "Source of the daily dose used in calculation."
+    },
+    "daily_dose_used": {
+      "type": "number",
+      "description": "Numeric daily dose value used in the daily cost calculation."
+    },
+    "daily_dose_unit": {
+      "type": "string",
+      "description": "Unit of the daily dose (e.g., \"mg\", \"mL\", \"capsule\")."
+    },
+    "formula": {
+      "type": "string",
+      "description": "Human-readable formula used for calculations (e.g., \"129.00 / 30 = 4.30 per tablet\", \"4.30 * 2 tablets/day = 8.60 USD/d\")."
+    },
+    "assumptions": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "List of assumptions made during normalization (e.g., \"assumed 30-day month\", \"assumed 2 capsules per day per label\")."
+    },
+    "includes_shipping": {
+      "type": "boolean",
+      "description": "Whether the observed price includes shipping. true, false, or omitted."
+    },
+    "includes_tax": {
+      "type": "boolean",
+      "description": "Whether the observed price includes tax. true, false, or omitted."
+    },
+    "promotion_details": {
+      "type": "string",
+      "description": "Description of promotions applied (e.g., \"buy 2 get 1 free\", \"10% off first order\")."
+    },
+    "gift_or_bonus": {
+      "type": "string",
+      "description": "Description of any gift or bonus items included with this price (e.g., \"free travel-size\")."
+    },
+    "exchange_rate": {
+      "type": "number",
+      "description": "Exchange rate used if currency conversion was applied."
+    },
+    "exchange_rate_date": { "$ref": "_defs.json#/definitions/date_iso8601" },
+    "exchange_rate_source": {
+      "type": "string",
+      "description": "Source of the exchange rate (e.g., \"ECB\", \"PBOC\", \"XE\")."
+    },
+    "data_quality_notes": {
+      "type": "string",
+      "description": "Quality concerns specific to this price observation."
+    },
+    "record_version": { "$ref": "_defs.json#/definitions/record_version" }
+  }
+}

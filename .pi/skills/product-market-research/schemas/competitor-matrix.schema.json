@@ -1,0 +1,126 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Competitor Metric Record",
+  "description": "A competitor metric is a derived record that places one product in a competitive context alongside other products. It is calculated from underlying product records, listing records, price observations, and claims.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "competitor_metric_id",
+    "product_master_id",
+    "competitor_group",
+    "product_name",
+    "brand",
+    "dosage_form",
+    "source_ids"
+  ],
+  "properties": {
+    "competitor_metric_id": {
+      "type": "string",
+      "pattern": "^cm-[a-z][a-z0-9]*-\\d+$",
+      "description": "Unique identifier: cm-{project}-{sequential}."
+    },
+    "product_master_id": { "$ref": "_defs.json#/definitions/product_master_id" },
+    "product_version_id": { "$ref": "_defs.json#/definitions/product_version_id" },
+    "competitor_group": {
+      "type": "string",
+      "enum": [
+        "direct_competitor", "indirect_competitor", "functional_alternative",
+        "same_ingredient", "same_target_population", "same_price_band"
+      ],
+      "description": "Which competitive group this product belongs to."
+    },
+    "product_name": {
+      "type": "string",
+      "description": "Display name for the competitor (brand + product name)."
+    },
+    "brand": {
+      "type": "string",
+      "description": "Brand name."
+    },
+    "version": {
+      "type": "string",
+      "description": "Version descriptor (e.g., \"2024 formulation\", \"new packaging\")."
+    },
+    "dosage_form": {
+      "type": "string",
+      "description": "Dosage form. Use \"not_applicable\" for non-pharmaceutical competitors or aggregated entries."
+    },
+    "active_ingredient": {
+      "type": "string",
+      "description": "Primary active ingredient name."
+    },
+    "dose": {
+      "type": "string",
+      "description": "Dose per unit (e.g., \"500 mg\", \"10 mg/mL\"). Use \"unknown\" when dose is not identified."
+    },
+    "package_size": {
+      "type": "string",
+      "description": "Package description (e.g., \"30 tablets\", \"100 mL\")."
+    },
+    "price": {
+      "type": "number",
+      "description": "The most representative price for comparison."
+    },
+    "currency": { "$ref": "_defs.json#/definitions/currency" },
+    "price_type": {
+      "type": "string",
+      "enum": ["list_price", "sale_price", "unit_price", "daily_cost", "range_low", "range_high", "unknown"],
+      "description": "Type of price selected."
+    },
+    "normalized_unit_price": {
+      "type": "number",
+      "description": "Price normalized to a standard unit (e.g., per-g, per-mL, per-tablet)."
+    },
+    "normalized_unit_price_unit": {
+      "type": "string",
+      "description": "Unit of the normalized price."
+    },
+    "daily_cost": {
+      "type": "number",
+      "description": "Estimated daily cost based on labeled or guideline-recommended dose."
+    },
+    "daily_cost_currency": { "$ref": "_defs.json#/definitions/currency" },
+    "daily_cost_assumptions": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "List of assumptions used in daily cost calculation."
+    },
+    "claims_summary": {
+      "type": "string",
+      "description": "Concise summary of key commercial claims for this product, or a link to the relevant commercial claim records."
+    },
+    "claim_support_level": {
+      "type": "string",
+      "enum": ["direct", "partial", "indirect", "insufficient", "contradicted", "not_assessed"],
+      "description": "Overall evidence support for major claims."
+    },
+    "channels": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "List of platform/channel codes where this product was observed (e.g., [\"tmall\", \"jd\", \"official\"])."
+    },
+    "platform_count": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Number of distinct platforms where the product was found."
+    },
+    "listing_count": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Number of listings collected for this product."
+    },
+    "date_of_data": { "$ref": "_defs.json#/definitions/date_iso8601" },
+    "data_quality": { "$ref": "_defs.json#/definitions/confidence_level" },
+    "main_limitations": {
+      "type": "string",
+      "description": "Free-text description of important limitations affecting this competitor entry."
+    },
+    "source_ids": {
+      "type": "array",
+      "items": { "$ref": "_defs.json#/definitions/source_id_ref" },
+      "minItems": 1,
+      "description": "List of source IDs that contributed to this competitor metric."
+    },
+    "record_version": { "$ref": "_defs.json#/definitions/record_version" }
+  }
+}

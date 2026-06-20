@@ -1,0 +1,2 @@
+{"listing_id":"ls-tmall-20250620-099","source_id":"tmall-20250620-099","title":"Missing required fields","price":99.00,"currency":"CNY","price_type":"list_price","collection_date":"2025-06-20"}
+{"listing_id":"ls-tmall-20250620-098","source_id":"tmall-20250620-098","title":"Missing seller_type","price":99.00,"currency":"CNY","price_type":"list_price","seller_type":"unknown","collection_date":"2025-06-20","extra_bad_field":"this should fail additionalProperties"}

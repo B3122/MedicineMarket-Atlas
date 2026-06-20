@@ -1,0 +1,96 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Audit Findings",
+  "description": "Validates independent audit findings from report review. Each record captures findings, corrections, and a pass/fail decision against the research report artifacts.",
+  "type": "object",
+  "additionalProperties": true,
+  "required": [
+    "audit_id",
+    "report_artifacts",
+    "findings",
+    "corrected_wording",
+    "pass_fail_decision"
+  ],
+  "properties": {
+    "audit_id": {
+      "$ref": "_defs.json#/definitions/identifier"
+    },
+    "report_artifacts": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1,
+      "description": "File paths of the report artifacts that were audited."
+    },
+    "findings": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": true,
+        "required": ["severity", "category", "description", "location", "recommendation"],
+        "properties": {
+          "severity": {
+            "$ref": "_defs.json#/definitions/findingSeverity"
+          },
+          "category": {
+            "type": "string",
+            "description": "Category of the finding (e.g. 'missing_source', 'unsubstantiated_claim', 'misattributed_citation', 'calculation_error', 'mixed_products', 'inconsistent_unit', 'unsupported_inference'). Use \"unknown\" when uncategorized."
+          },
+          "description": {
+            "type": "string",
+            "description": "Detailed description of the finding."
+          },
+          "location": {
+            "type": "string",
+            "description": "Location in the report where the issue was found (e.g. section name, table number, or artifact path with line reference)."
+          },
+          "recommendation": {
+            "type": "string",
+            "description": "Recommended action to resolve the finding."
+          }
+        }
+      },
+      "description": "Audit findings ordered by severity. Empty array if no findings were identified."
+    },
+    "corrected_wording": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": true,
+        "required": ["original", "revised", "reason"],
+        "properties": {
+          "original": {
+            "type": "string",
+            "description": "The original wording as it appeared in the report."
+          },
+          "revised": {
+            "type": "string",
+            "description": "The corrected or clarified wording."
+          },
+          "reason": {
+            "type": "string",
+            "description": "Reason for the wording correction (e.g. 'overstated_evidence', 'merged_product_versions', 'missing_qualification')."
+          }
+        }
+      },
+      "description": "Wording corrections applied or recommended. Empty array if no wording changes are needed."
+    },
+    "pass_fail_decision": {
+      "type": "string",
+      "enum": ["pass", "pass_with_minor_revisions", "fail_requires_major_revisions"],
+      "description": "Overall audit decision."
+    },
+    "audit_date": {
+      "$ref": "_defs.json#/definitions/dateString"
+    },
+    "auditor_notes": {
+      "type": "string",
+      "description": "Additional observations from the auditor not captured by individual findings."
+    },
+    "requires_human_review": {
+      "type": "boolean",
+      "description": "Whether the audit identified issues that require human judgment to resolve."
+    }
+  }
+}

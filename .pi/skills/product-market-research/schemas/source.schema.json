@@ -1,0 +1,67 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Source Record",
+  "description": "A source record represents one page, document, or database entry that was accessed, inspected, and saved as raw evidence. Every fact in the system traces back to exactly one source record.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "source_id",
+    "source_type",
+    "platform",
+    "title",
+    "url",
+    "collection_date"
+  ],
+  "properties": {
+    "source_id": { "$ref": "_defs.json#/definitions/source_id" },
+    "source_type": {
+      "type": "string",
+      "enum": [
+        "web_page", "pdf", "api_response", "screenshot", "database_record",
+        "regulatory_filing", "academic_article", "industry_report", "social_post"
+      ],
+      "description": "Category of source."
+    },
+    "platform": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9]*$",
+      "description": "Platform code where the source was collected (e.g., tmall, jd, official, xhs, pubmed, nmpa)."
+    },
+    "title": {
+      "type": "string",
+      "description": "Page title, document title, or descriptive label assigned during collection."
+    },
+    "url": {
+      "type": "string",
+      "description": "Full URL of the source page. Use \"not_applicable\" for offline documents."
+    },
+    "collection_date": { "$ref": "_defs.json#/definitions/date_iso8601" },
+    "collection_datetime": { "$ref": "_defs.json#/definitions/datetime_iso8601" },
+    "collection_method": {
+      "type": "string",
+      "enum": ["manual_browse", "playwright", "api", "mcp_tool", "file_import", "user_provided"],
+      "description": "How the source was collected."
+    },
+    "snapshot_path": {
+      "type": "string",
+      "description": "Relative path to a saved screenshot, PDF, or archival copy. Use \"not_applicable\" if no snapshot was saved."
+    },
+    "access_notes": {
+      "type": "string",
+      "description": "Free-text notes about access conditions: login required, CAPTCHA, paywall, partial content, dynamic content, page not found. Use \"unknown\" when access status is not determined."
+    },
+    "language": { "$ref": "_defs.json#/definitions/language" },
+    "region": { "$ref": "_defs.json#/definitions/region" },
+    "data_category": {
+      "type": "string",
+      "enum": [
+        "product_identity", "pricing", "claims", "clinical_evidence",
+        "regulatory_status", "consumer_narrative", "market_metric"
+      ],
+      "description": "What kind of information this source primarily supports."
+    },
+    "extraction_confidence": { "$ref": "_defs.json#/definitions/confidence_level" },
+    "record_version": { "$ref": "_defs.json#/definitions/record_version" },
+    "record_version_note": { "$ref": "_defs.json#/definitions/record_version_note" }
+  }
+}

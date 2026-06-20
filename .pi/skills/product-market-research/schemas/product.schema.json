@@ -1,0 +1,88 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Product Record",
+  "description": "A product record describes an identified product at the master level and, optionally, at the version level. One product record exists per distinct product identity after normalization.",
+  "type": "object",
+  "additionalProperties": true,
+  "required": [
+    "product_master_id",
+    "brand",
+    "manufacturer",
+    "dosage_form",
+    "active_ingredients",
+    "region",
+    "source_ids"
+  ],
+  "properties": {
+    "product_master_id": { "$ref": "_defs.json#/definitions/product_master_id" },
+    "product_version_id": { "$ref": "_defs.json#/definitions/product_version_id" },
+    "brand": {
+      "type": "string",
+      "description": "Brand name as it appears on the official product or label. Use \"unknown\" when the brand cannot be identified."
+    },
+    "manufacturer": {
+      "type": "string",
+      "description": "Manufacturer or distributor name. Use \"unknown\" when not found on the source."
+    },
+    "standard_name": {
+      "type": "string",
+      "description": "Standardized product name following a naming convention (brand + generic + form + dose). Derived during normalization."
+    },
+    "generic_name": {
+      "type": "string",
+      "description": "Active ingredient or generic name (INN or local equivalent)."
+    },
+    "dosage_form": {
+      "type": "string",
+      "description": "Pharmaceutical dosage form (e.g., tablet, capsule, cream, injection, oral_solution, powder, patch). Use \"unknown\" for non-pharmaceutical products."
+    },
+    "active_ingredients": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["name", "per_unit_dose", "per_unit_dose_unit", "original_per_unit_dose"],
+        "properties": {
+          "name": { "type": "string" },
+          "per_unit_dose": { "type": "string" },
+          "per_unit_dose_unit": { "type": "string" },
+          "original_per_unit_dose": { "type": "string" }
+        }
+      },
+      "description": "List of active ingredients. Empty array [] if no active ingredient (e.g., medical device)."
+    },
+    "package_quantity": {
+      "type": ["string", "number"],
+      "description": "Number of dosage units per package (e.g., \"30\", \"10x3\" for multi-pack). Use \"unknown\" when not found."
+    },
+    "package_description": {
+      "type": "string",
+      "description": "Free-text description of the package configuration (e.g., \"30 tablets per bottle, 2 bottles per box\")."
+    },
+    "region": { "$ref": "_defs.json#/definitions/region" },
+    "registration_id": {
+      "type": "string",
+      "description": "Regulatory registration, filing, or approval number (e.g., NMPA Guo Yao Zhun Zi, FDA NDC, EU CE mark number)."
+    },
+    "registration_jurisdiction": { "$ref": "_defs.json#/definitions/region" },
+    "registration_type": {
+      "type": "string",
+      "enum": ["drug_approval", "device_registration", "cosmetics_filing", "health_food_filing", "otc_monograph", "unknown"],
+      "description": "Type of registration."
+    },
+    "source_ids": {
+      "type": "array",
+      "items": { "$ref": "_defs.json#/definitions/source_id_ref" },
+      "minItems": 1,
+      "description": "List of source IDs that contributed to this product record. At least one source required."
+    },
+    "data_quality_score": { "$ref": "_defs.json#/definitions/confidence_level" },
+    "identity_certainty": {
+      "type": "string",
+      "enum": ["confirmed", "probable", "possible", "uncertain"],
+      "description": "How certain the product identity match is. Use \"uncertain\" when human review is needed."
+    },
+    "record_version": { "$ref": "_defs.json#/definitions/record_version" },
+    "record_version_note": { "$ref": "_defs.json#/definitions/record_version_note" }
+  }
+}

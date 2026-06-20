@@ -1,0 +1,84 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "description": "Shared project-level definitions for research report schemas.",
+  "definitions": {
+    "identifier": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9]*-\\d{8}-\\d{3}$",
+      "description": "General-purpose unique identifier: {prefix}-{YYYYMMDD}-{sequential}. Lowercase alphanumeric prefix, date, zero-padded three-digit sequence."
+    },
+    "citation": {
+      "type": "object",
+      "properties": {
+        "doi": {
+          "type": "string",
+          "description": "Digital Object Identifier. Use \"unknown\" when not available."
+        },
+        "pmid": {
+          "type": "string",
+          "description": "PubMed ID. Use \"unknown\" when not available."
+        },
+        "title": {
+          "type": "string",
+          "description": "Full title of the cited work."
+        },
+        "authors": {
+          "type": "string",
+          "description": "Author list as a formatted string (e.g. 'Smith JA, Jones BC'). Use \"unknown\" when not available."
+        },
+        "journal": {
+          "type": "string",
+          "description": "Journal or venue name. Use \"unknown\" when not available."
+        },
+        "year": {
+          "type": "string",
+          "pattern": "^\\d{4}$",
+          "description": "Publication year as four-digit string. Use \"unknown\" when not available."
+        }
+      },
+      "required": ["doi", "title"],
+      "description": "Reference to a published academic or professional source."
+    },
+    "sourceReference": {
+      "type": "object",
+      "properties": {
+        "source_id": {
+          "$ref": "#/definitions/identifier"
+        },
+        "url": {
+          "type": "string",
+          "description": "URL where the source was accessed."
+        },
+        "accessed_date": {
+          "$ref": "#/definitions/dateString"
+        },
+        "platform": {
+          "type": "string",
+          "description": "Platform name (e.g. 'jd_com', 'tmall', 'pubmed'). Use \"unknown\" when not determined."
+        }
+      },
+      "required": ["source_id", "url", "accessed_date"],
+      "description": "Reference to a sourced record with provenance metadata."
+    },
+    "evidenceLevel": {
+      "type": "string",
+      "enum": ["high", "moderate", "low", "very_low", "unknown"],
+      "description": "Quality-of-evidence rating following standard evidence hierarchies."
+    },
+    "claimSupportLevel": {
+      "type": "string",
+      "enum": ["directly-supported", "partially-supported", "indirectly-supported", "unsupported", "contradicted", "cannot-determine"],
+      "description": "Degree to which available evidence supports a claim."
+    },
+    "findingSeverity": {
+      "type": "string",
+      "enum": ["critical", "major", "minor", "info"],
+      "description": "Severity rating for an audit finding or discrepancy."
+    },
+    "dateString": {
+      "type": "string",
+      "pattern": "^\\d{4}(-\\d{2}(-\\d{2})?)?$",
+      "description": "ISO 8601 date string: YYYY, YYYY-MM, or YYYY-MM-DD. Use \"unknown\" when the date is not known."
+    }
+  }
+}

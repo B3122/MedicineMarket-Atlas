@@ -1,0 +1,3 @@
+{"product_master_id":"pm-broken-1","source_id":"tmall-20250620-001","title":"Missing price_type","price":99.00,"currency":"CNY","seller_type":"official_brand","collection_date":"2025-06-20"}
+garbage line that is not json
+{"product_master_id":"pm-broken-2","brand":broken_field,"manufacturer":"BrokenCorp","dosage_form":"capsule","active_ingredients":[],"region":"US","source_ids":["broken-001"],"data_quality_score":"high"}

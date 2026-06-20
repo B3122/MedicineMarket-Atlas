@@ -1,0 +1,3 @@
+{"listing_id":"ls-tmall-20250620-001","source_id":"tmall-20250620-001","title":"Bad JSON - no closing brace","price":129.00,"currency":"CNY","price_type":"list_price","seller_type":"official_brand","collection_date":"2025-06-20"
+Not even valid JSON at all
+{"listing_id":"ls-tmall-20250620-002","source_id":"tmall-20250620-002","title":"Another broken line",}

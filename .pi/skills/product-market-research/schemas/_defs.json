@@ -1,0 +1,84 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "description": "Shared definitions for product-market-research record schemas.",
+  "definitions": {
+    "source_id": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9]*-\\d{8}-\\d{3}$",
+      "description": "Unique source identifier: {platform}-{YYYYMMDD}-{sequential}. Lowercase alphanumeric platform code, date, zero-padded sequence."
+    },
+    "product_master_id": {
+      "type": "string",
+      "pattern": "^pm-[a-z][a-z0-9]*-\\d+$",
+      "description": "Stable core product identifier: pm-{platform_prefix}-{sequential}."
+    },
+    "product_version_id": {
+      "type": "string",
+      "pattern": "^pv-[a-z][a-z0-9]*-\\d+$",
+      "description": "Product version/dose/package variant identifier: pv-{platform_prefix}-{sequential}."
+    },
+    "currency": {
+      "type": "string",
+      "pattern": "^[A-Z]{3}$",
+      "description": "ISO 4217 three-letter currency code (uppercase). Use \"unknown\" when currency cannot be determined."
+    },
+    "date_iso8601": {
+      "type": "string",
+      "pattern": "^\\d{4}(-\\d{2}(-\\d{2})?)?$",
+      "description": "ISO 8601 date: YYYY-MM-DD, YYYY-MM, or YYYY."
+    },
+    "datetime_iso8601": {
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}([+-]\\d{2}:\\d{2}|Z)?$",
+      "description": "ISO 8601 datetime with timezone: YYYY-MM-DDTHH:mm:ss±HH:mm or Z."
+    },
+    "region": {
+      "type": "string",
+      "pattern": "^[A-Z]{2}$",
+      "description": "ISO 3166-1 alpha-2 region code (uppercase). Use \"unknown\" when not determined."
+    },
+    "language": {
+      "type": "string",
+      "pattern": "^[a-z]{2}$",
+      "description": "ISO 639-1 language code (lowercase two letters)."
+    },
+    "record_version": {
+      "type": "integer",
+      "minimum": 1,
+      "description": "Version number of this record. Starts at 1."
+    },
+    "record_version_note": {
+      "type": "string",
+      "description": "Reason for the latest version change."
+    },
+    "confidence_level": {
+      "type": "string",
+      "enum": ["high", "medium", "low", "unknown"],
+      "description": "Quality or confidence rating."
+    },
+    "price_type_source": {
+      "type": "string",
+      "enum": ["list_price", "sale_price", "member_price", "live_price", "coupon_price", "subscription_price", "bundle_price", "unit_price", "daily_cost", "unknown"],
+      "description": "Type of price observed or calculated."
+    },
+    "price_type_listing": {
+      "type": "string",
+      "enum": ["list_price", "sale_price", "member_price", "live_price", "coupon_price", "subscription_price", "bundle_price", "unknown"],
+      "description": "Type of price observed on a listing."
+    },
+    "source_id_ref": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9]*-\\d{8}-\\d{3}$",
+      "description": "Reference to an existing source_id."
+    },
+    "null_safe_string": {
+      "type": "string",
+      "description": "String value. Use \"unknown\" when the value exists but was not observed; \"not_applicable\" when the field does not apply."
+    },
+    "seller_type": {
+      "type": "string",
+      "enum": ["official_brand", "authorized_distributor", "platform_self", "third_party", "individual", "unknown"],
+      "description": "Type of seller on a platform listing."
+    }
+  }
+}
