@@ -13,10 +13,6 @@
     "enabled": true,
     "maxRetries": 3
   },
-  "packages": [
-    "npm:pi-subagents",
-    "npm:pi-web-access"
-  ],
   "skills": [
     "skills"
   ],

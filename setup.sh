@@ -146,28 +146,45 @@ fi
 success "Python dependencies installed."
 
 # ---------------------------------------------------------------------------
-# 6. Install npm extensions
+# 6. Install Pi/OpenCode plugins (user-level only)
 # ---------------------------------------------------------------------------
-header "Installing npm extensions..."
+header "Installing Pi/OpenCode plugins..."
 
-if [[ ! -d ".pi/npm" ]]; then
-    error ".pi/npm directory not found in ${REPO_ROOT}"
-    exit 1
+install_pi_plugin() {
+    local pkg="$1"
+    if pi list 2>/dev/null | grep -q "^  npm:${pkg}$"; then
+        success "${pkg} is already registered at user level."
+        return 0
+    fi
+    info "Installing ${pkg}..."
+    if pi install "npm:${pkg}"; then
+        success "${pkg} installed and registered at user level."
+        return 0
+    else
+        warn "Failed to install ${pkg} automatically."
+        echo "  Please run manually: pi install npm:${pkg}"
+        return 1
+    fi
+}
+
+if [[ "${PI_FOUND}" != "true" ]]; then
+    warn "Pi / OpenCode CLI not found. Skipping plugin installation."
+    echo "  The following plugins are required for web access and subagent tasks:"
+    echo "    - pi-web-access"
+    echo "    - pi-subagents"
+    echo ""
+    echo "  After installing Pi CLI, register them at user level with:"
+    echo "    pi install npm:pi-web-access"
+    echo "    pi install npm:pi-subagents"
+    echo ""
+    echo "  Do NOT use 'pi install -l' (project-local), because that can conflict"
+    echo "  with your user-level OpenCode configuration."
+    echo ""
+else
+    info "Registering plugins at user level (not project-local)..."
+    install_pi_plugin "pi-web-access"
+    install_pi_plugin "pi-subagents"
 fi
-
-cd ".pi/npm"
-
-if [[ ! -f "package.json" ]]; then
-    error "package.json not found in .pi/npm/"
-    exit 1
-fi
-
-info "Running: npm install"
-npm install
-
-success "npm extensions installed."
-
-cd "${REPO_ROOT}"
 
 # ---------------------------------------------------------------------------
 # 7. Verify installation
@@ -187,14 +204,27 @@ else
     exit 1
 fi
 
-if [[ -d ".pi/npm/node_modules" ]]; then
-    success "npm dependencies verified (node_modules present)."
-else
-    warn "npm node_modules directory not found — npm install may have failed."
-fi
+# ---------------------------------------------------------------------------
+# 8. Web search / Exa AI API key reminder
+# ---------------------------------------------------------------------------
+header "Web search API key reminder..."
+
+warn "pi-web-access uses Exa AI for web search."
+echo "  The plugin may include a limited built-in Exa quota. Once that quota"
+echo "  is exhausted, web search will stop working unless you add your own"
+echo "  Exa API key."
+echo ""
+echo "  To use your own Exa API key:"
+echo "    1. Sign up at https://exa.ai and create an API key."
+echo "    2. Create or edit ~/.pi/web-search.json:"
+echo "       {"
+echo "         \"provider\": \"exa\","
+echo "         \"exaApiKey\": \"YOUR_API_KEY_HERE\""
+echo "       }"
+echo ""
 
 # ---------------------------------------------------------------------------
-# 8. Success message & next steps
+# 9. Success message & next steps
 # ---------------------------------------------------------------------------
 header "========================================"
 header "  Setup Complete!"
