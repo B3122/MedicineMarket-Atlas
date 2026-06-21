@@ -1,6 +1,3 @@
-# Auto-commit watcher runtime log
-.auto-commit.log
-
 # Python
 __pycache__/
 *.py[cod]

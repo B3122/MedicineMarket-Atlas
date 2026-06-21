@@ -277,6 +277,13 @@ conversation output.
 
 Use stable filenames and avoid overwriting raw source material.
 
+After editing any tracked repository file, commit the change promptly with a
+clear, present-tense imperative message. Do not leave file modifications
+unstaged or uncommitted when the edit set is complete and the working tree is
+otherwise clean enough to commit. Treat a clean git state as part of finishing
+the task. This rule applies to the orchestrator and to every subagent that
+has write access to the repository.
+
 Recommended artifact categories:
 
 - plans;

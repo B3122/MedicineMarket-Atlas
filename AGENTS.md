@@ -253,6 +253,8 @@ This project uses a single default branch model:
 
 2. **No force push to remote**. The `main` branch shall never be force-pushed to any remote repository.
 
+3. **Commit after editing**. When an agent edits a tracked repository file and the resulting change set is complete, the agent must stage and commit the change with a clear, present-tense imperative commit message. Do not leave completed edits unstaged or uncommitted.
+
 ### Process
 
 1. Work and commit normally on `main`.
