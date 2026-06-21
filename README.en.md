@@ -15,6 +15,20 @@
 
 ---
 
+## ⚠️ Disclaimer
+
+**This project is for learning, research, and technical exchange only. It is not designed for commercial use.** Please read the full disclaimer before use:
+
+👉 [DISCLAIMER.md](DISCLAIMER.md)
+
+Key points:
+
+- You must **configure your own Exa API and other third-party service credentials**, and you are solely responsible for associated costs and compliance.
+- System outputs may contain errors, omissions, or outdated information and **do not constitute medical, investment, legal, or business advice**.
+- This project is provided under the MIT License; **the authors assume no liability for any direct or indirect damages arising from its use**.
+
+---
+
 ## 📦 Installation
 
 Pick your OS and copy the matching commands. The setup script auto-detects your environment, checks Python/Node.js versions, and installs all dependencies.

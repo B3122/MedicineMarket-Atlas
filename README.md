@@ -22,6 +22,25 @@
 
 ---
 
+## ⚠️ 免责声明 · Disclaimer
+
+**本项目仅供学习、研究与技术交流使用，不是为商业用途设计。** 使用前请阅读完整免责声明：
+
+**This project is for learning, research, and technical exchange only. It is not designed for commercial use.** Please read the full disclaimer before use:
+
+👉 [DISCLAIMER.md](DISCLAIMER.md)
+
+核心要点 / Key points:
+
+- 需**自行配置 Exa API 等第三方服务凭证**，并自行承担相关费用与合规责任。
+- You must **configure your own Exa API and other third-party service credentials**, and you are solely responsible for associated costs and compliance.
+- 系统输出可能存在错误、遗漏或过时信息，**不构成医疗、投资、法律或商业建议**。
+- System outputs may contain errors, omissions, or outdated information and **do not constitute medical, investment, legal, or business advice**.
+- 本项目按 MIT 许可证提供，**不承担因使用本软件而产生的任何直接或间接责任**。
+- This project is provided under the MIT License; **the authors assume no liability for any direct or indirect damages arising from its use**.
+
+---
+
 ## 📦 安装 · Installation
 
 选择你的操作系统，复制对应命令即可开始。安装脚本会自动检测环境、检查 Python 与 Node.js 版本，并安装所有依赖。
