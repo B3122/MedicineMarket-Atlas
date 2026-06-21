@@ -5,6 +5,10 @@
 **本地化 AI Agent 驱动的医药及保健品市场调研系统**  
 **A Local, Agent-Driven Pharmaceutical & Health-Product Market Research System**
 
+**(其实只是一个帮朋友折腾的、私人使用为主的deep research类agent，开源出来帮助她下载&方便有类似需求的人测试使用。欢迎就任何问题和改进措施提供建议）**
+
+**（Actually, it is just as a small side project I built to help a friend doing some kinds of pharmaceutical market research work. I published it here to help her installing it and share it to other people who have similar needs. Suggestions, improvements, and constructive criticism are always welcome.)**
+
 [![License](https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square)](LICENSE)
 [![Platform](https://img.shields.io/badge/platform-macOS%20%7C%20Linux%20%7C%20Windows-8A2BE2?style=flat-square)]()
 [![Python](https://img.shields.io/badge/Python-≥3.8-3776AB?style=flat-square&logo=python&logoColor=white)]()
